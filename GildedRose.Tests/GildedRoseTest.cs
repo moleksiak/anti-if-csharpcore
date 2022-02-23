@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GildedRoseKata;
 using FluentAssertions;
+using System.Linq;
 
 namespace GildedRoseTests
 {
@@ -14,6 +15,66 @@ namespace GildedRoseTests
             GildedRose app = new GildedRose(Items);
             app.UpdateQuality();
             Assert.Equal("foo", Items[0].Name);
+        }
+
+        [Theory]
+        [InlineData(22, 8, 20)]
+        [InlineData(23, 4, 20)]
+        [InlineData(0, 0, 20)]
+        public void AssertBackstagePassQuality(int expected, int sellIn, int initialQuality)
+        {            
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "Backstage passes to a TAFKAL80ETC concert", 
+                    SellIn = sellIn, 
+                    Quality = initialQuality
+                } 
+            };
+
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Items.First().Quality.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(22, 0, 20)]
+        public void AssertAgedBrieQuality(int expected, int sellIn, int initialQuality)
+        {
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "Aged Brie",
+                    SellIn = sellIn,
+                    Quality = initialQuality
+                }
+            };
+
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Items.First().Quality.Should().Be(expected);
+        }
+
+        [Fact]
+        public void AssertGenericQuality()
+        {
+            var expected = 1;
+
+            IList<Item> Items = new List<Item>
+            {
+                new Item
+                {
+                    Name = "foo",
+                    SellIn = -1,
+                    Quality = 3
+                }
+            };
+
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Items.First().Quality.Should().Be(expected);
         }
 
         [Fact]
