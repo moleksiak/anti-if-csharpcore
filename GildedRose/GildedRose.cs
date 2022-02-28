@@ -12,91 +12,114 @@ namespace GildedRoseKata
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Items.Count; i++)
+            foreach (var item in Items)
             {
-                if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                if (IsSulfuras(item))
+                {                  
+                }
+                else if (IsGeneric(item))
                 {
-                    if (Items[i].Quality > 0)
+                    if (item.Quality > 0)
                     {
-                        if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                        if (!IsSulfuras(item))
                         {
-                            DecreaseQuality(Items[i]);
+                            DecreaseQuality(item);
                         }
                     }
                 }
                 else
                 {
-                    if (IsQualityLessThan50(Items[i]))
+                    if (IsQualityLessThan50(item))
                     {
-                        IncreaseQuality(Items[i]);
+                        IncreaseQuality(item);
 
-                        if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+                        if (IsBackstagePass(item))
                         {
-                            if (Items[i].SellIn < 11)
+                            if (item.SellIn < 11)
                             {
-                                if (IsQualityLessThan50(Items[i]))
+                                if (IsQualityLessThan50(item))
                                 {
-                                    IncreaseQuality(Items[i]);
+                                    IncreaseQuality(item);
                                 }
                             }
 
-                            if (Items[i].SellIn < 6)
+                            if (item.SellIn < 6)
                             {
-                                if (IsQualityLessThan50(Items[i]))
+                                if (IsQualityLessThan50(item))
                                 {
-                                    IncreaseQuality(Items[i]);
+                                    IncreaseQuality(item);
                                 }
                             }
                         }
                     }
                 }
 
-                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                if (!IsSulfuras(item))
                 {
-                    Items[i].SellIn = Items[i].SellIn - 1;
+                    item.SellIn = item.SellIn - 1;
                 }
 
-                if (Items[i].SellIn < 0)
+                if (item.SellIn < 0)
                 {
-                    if (Items[i].Name != "Aged Brie")
+                    if (!IsAgedBrie(item))
                     {
-                        if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                        if (!IsBackstagePass(item))
                         {
-                            if (Items[i].Quality > 0)
+                            if (item.Quality > 0)
                             {
-                                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                                if (!IsSulfuras(item))
                                 {
-                                    DecreaseQuality(Items[i]);
+                                    DecreaseQuality(item);
                                 }
                             }
                         }
                         else
                         {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
+                            item.Quality = item.Quality - item.Quality;
                         }
                     }
                     else
                     {
-                        if (IsQualityLessThan50(Items[i]))
+                        if (IsQualityLessThan50(item))
                         {
-                            IncreaseQuality(Items[i]);
+                            IncreaseQuality(item);
                         }
                     }
                 }
             }
         }
 
-        private bool IsQualityLessThan50(Item item)
+        private static bool IsGeneric(Item item)
+        {
+            return !(IsSulfuras(item) || IsAgedBrie(item) || IsBackstagePass(item));
+        }
+
+        private static bool IsSulfuras(Item currentItem)
+        {
+            return currentItem.Name == "Sulfuras, Hand of Ragnaros";
+        }
+
+        private static bool IsBackstagePass(Item item)
+        {
+            return item.Name == "Backstage passes to a TAFKAL80ETC concert";
+        }
+
+        private static bool IsAgedBrie(Item item)
+        {
+            return item.Name == "Aged Brie";
+        }
+
+        private static bool IsQualityLessThan50(Item item)
         {
             return item.Quality < 50;
         }
 
-        private void IncreaseQuality(Item item)
+        private static void IncreaseQuality(Item item)
         {
             item.Quality = item.Quality + 1;
         }
 
-        private void DecreaseQuality(Item item)
+        private static void DecreaseQuality(Item item)
         {
             item.Quality = item.Quality - 1;
         }
