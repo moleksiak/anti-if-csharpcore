@@ -20,31 +20,31 @@ namespace GildedRoseKata
                     {
                         if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
                         {
-                            Items[i].Quality = Items[i].Quality - 1;
+                            DecreaseQuality(Items[i]);
                         }
                     }
                 }
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (IsQualityLessThan50(Items[i]))
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        IncreaseQuality(Items[i]);
 
                         if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
                         {
                             if (Items[i].SellIn < 11)
                             {
-                                if (Items[i].Quality < 50)
+                                if (IsQualityLessThan50(Items[i]))
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    IncreaseQuality(Items[i]);
                                 }
                             }
 
                             if (Items[i].SellIn < 6)
                             {
-                                if (Items[i].Quality < 50)
+                                if (IsQualityLessThan50(Items[i]))
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    IncreaseQuality(Items[i]);
                                 }
                             }
                         }
@@ -66,7 +66,7 @@ namespace GildedRoseKata
                             {
                                 if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
                                 {
-                                    Items[i].Quality = Items[i].Quality - 1;
+                                    DecreaseQuality(Items[i]);
                                 }
                             }
                         }
@@ -77,13 +77,28 @@ namespace GildedRoseKata
                     }
                     else
                     {
-                        if (Items[i].Quality < 50)
+                        if (IsQualityLessThan50(Items[i]))
                         {
-                            Items[i].Quality = Items[i].Quality + 1;
+                            IncreaseQuality(Items[i]);
                         }
                     }
                 }
             }
+        }
+
+        private bool IsQualityLessThan50(Item item)
+        {
+            return item.Quality < 50;
+        }
+
+        private void IncreaseQuality(Item item)
+        {
+            item.Quality = item.Quality + 1;
+        }
+
+        private void DecreaseQuality(Item item)
+        {
+            item.Quality = item.Quality - 1;
         }
     }
 }
