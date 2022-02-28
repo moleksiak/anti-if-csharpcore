@@ -27,31 +27,16 @@ namespace GildedRoseKata
                         }
                     }
                 }
-                else
+                else if (IsAgedBrie(item))
                 {
                     if (IsQualityLessThan50(item))
                     {
                         IncreaseQuality(item);
-
-                        if (IsBackstagePass(item))
-                        {
-                            if (item.SellIn < 11)
-                            {
-                                if (IsQualityLessThan50(item))
-                                {
-                                    IncreaseQuality(item);
-                                }
-                            }
-
-                            if (item.SellIn < 6)
-                            {
-                                if (IsQualityLessThan50(item))
-                                {
-                                    IncreaseQuality(item);
-                                }
-                            }
-                        }
                     }
+                }
+                else if (IsBackstagePass(item))
+                {
+                    HandleBackstagePass(item);
                 }
 
                 if (!IsSulfuras(item))
@@ -84,6 +69,30 @@ namespace GildedRoseKata
                         {
                             IncreaseQuality(item);
                         }
+                    }
+                }
+            }
+        }
+
+        private static void HandleBackstagePass(Item item)
+        {
+            if (IsQualityLessThan50(item))
+            {
+                IncreaseQuality(item);
+
+                if (item.SellIn < 11)
+                {
+                    if (IsQualityLessThan50(item))
+                    {
+                        IncreaseQuality(item);
+                    }
+                }
+
+                if (item.SellIn < 6)
+                {
+                    if (IsQualityLessThan50(item))
+                    {
+                        IncreaseQuality(item);
                     }
                 }
             }
