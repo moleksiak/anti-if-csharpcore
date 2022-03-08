@@ -19,57 +19,52 @@ namespace GildedRoseKata
                 }
                 else if (IsGeneric(item))
                 {
-                    if (item.Quality > 0)
-                    {
-                        if (!IsSulfuras(item))
-                        {
-                            DecreaseQuality(item);
-                        }
-                    }
+                    HandleGeneric(item);
                 }
                 else if (IsAgedBrie(item))
                 {
-                    if (IsQualityLessThan50(item))
-                    {
-                        IncreaseQuality(item);
-                    }
+                    HandleAgedBrie(item);
                 }
                 else if (IsBackstagePass(item))
                 {
                     HandleBackstagePass(item);
-                }
+                }                    
+            }
+        }
 
+        private static void HandleAgedBrie(Item item)
+        {
+            if (IsQualityLessThan50(item))
+            {
+                IncreaseQuality(item);
+            }
+            item.SellIn = item.SellIn - 1;
+
+            if (item.SellIn < 0)
+            {
+                if (IsQualityLessThan50(item))
+                {
+                    IncreaseQuality(item);
+                }
+            }
+        }
+
+        private static void HandleGeneric(Item item)
+        {
+            if (item.Quality > 0)
+            {
                 if (!IsSulfuras(item))
                 {
-                    item.SellIn = item.SellIn - 1;
+                    DecreaseQuality(item);
                 }
+            }
+            item.SellIn = item.SellIn - 1;
 
-                if (item.SellIn < 0)
+            if (item.SellIn < 0)
+            {
+                if (item.Quality > 0)
                 {
-                    if (!IsAgedBrie(item))
-                    {
-                        if (!IsBackstagePass(item))
-                        {
-                            if (item.Quality > 0)
-                            {
-                                if (!IsSulfuras(item))
-                                {
-                                    DecreaseQuality(item);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            item.Quality = item.Quality - item.Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (IsQualityLessThan50(item))
-                        {
-                            IncreaseQuality(item);
-                        }
-                    }
+                    DecreaseQuality(item);
                 }
             }
         }
@@ -95,6 +90,13 @@ namespace GildedRoseKata
                         IncreaseQuality(item);
                     }
                 }
+            }
+
+            item.SellIn = item.SellIn - 1;
+
+            if (item.SellIn < 0)
+            {
+                item.Quality = item.Quality - item.Quality;
             }
         }
 
