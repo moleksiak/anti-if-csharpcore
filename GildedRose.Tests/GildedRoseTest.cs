@@ -21,7 +21,12 @@ namespace GildedRoseTests
         [InlineData(22, 8, 20)]
         [InlineData(23, 4, 20)]
         [InlineData(0, 0, 20)]
-        public void AssertBackstagePassQuality(int expected, int sellIn, int initialQuality)
+        [InlineData(23, 1, 20)]
+        [InlineData(22, 6, 20)]
+        [InlineData(23, 5, 20)]
+        [InlineData(21, 11, 20)]
+        [InlineData(22, 10, 20)]
+        public void AssertBackstagePassQuality(int expectedQuality, int sellIn, int initialQuality)
         {            
             IList<Item> Items = new List<Item>
             {
@@ -35,11 +40,12 @@ namespace GildedRoseTests
 
             GildedRose app = new GildedRose(Items);
             app.UpdateQuality();
-            Items.First().Quality.Should().Be(expected);
+            Items.First().Quality.Should().Be(expectedQuality);
         }
 
         [Theory]
         [InlineData(22, 0, 20)]
+        [InlineData(21, 1, 20)]
         public void AssertAgedBrieQuality(int expected, int sellIn, int initialQuality)
         {
             IList<Item> Items = new List<Item>
@@ -57,18 +63,20 @@ namespace GildedRoseTests
             Items.First().Quality.Should().Be(expected);
         }
 
-        [Fact]
-        public void AssertGenericQuality()
+        [Theory]
+        [InlineData(18, 0, 20)]
+        [InlineData(19, 1, 20)]
+        [InlineData(1, -1, 3)]
+        [InlineData(0, 1, 0)]
+        public void AssertGenericQuality(int expected, int sellIn, int initialQuality)
         {
-            var expected = 1;
-
             IList<Item> Items = new List<Item>
             {
                 new Item
                 {
                     Name = "foo",
-                    SellIn = -1,
-                    Quality = 3
+                    SellIn = sellIn,
+                    Quality = initialQuality
                 }
             };
 

@@ -1,6 +1,6 @@
 ﻿namespace Inventory
 {
-    internal class Quality
+    public class Quality
     {
         private int _amount;
 
@@ -25,11 +25,6 @@
             {
                 _amount += 1;
             }
-        }
-
-        internal bool IsLessThan50()
-        {
-            return _amount < 50;
         }
 
         internal void Reset()
